@@ -1,0 +1,17 @@
+SOP: Create Non-Interactive User (kareem) on App Server 1
+
+          Section                                                                               Details
+        Objective  Create user 'kareem' with non-interactive shell (/usr/sbin/nologin) on App Server 1.
+   Pre-Requisites    SSH access to App Server 1, sudo/root privileges, Linux user management knowledge.
+           Step 1                                           SSH to App Server 1: ssh tony@172.16.238.10
+           Step 2                                                             Switch to root: sudo su -
+           Step 3                                                           Create user: useradd kareem
+           Step 4 Set non-interactive shell: usermod -s $(command -v nologin || echo /bin/false) kareem
+           Step 5                                                  Verify user: grep kareem /etc/passwd
+         Expected                                    kareem:x:1002:1002::/home/kareem:/usr/sbin/nologin
+Step 6 (Optional)                           Remove home dir: rm -rf /home/kareem && usermod -d / kareem
+           Step 7                                   Lock password: passwd -l kareem && passwd -S kareem
+           Step 8                Verify login: su - kareem → 'This account is currently not available.'
+     Verification                                            id kareem | grep kareem | passwd -S kareem
+         Rollback                                                        Delete user: userdel -r kareem
+        End State        User 'kareem' exists, /usr/sbin/nologin shell, password locked, no SSH access.
