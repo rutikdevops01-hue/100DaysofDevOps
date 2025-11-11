@@ -1,0 +1,40 @@
+SOP: Create User (kareem) with Expiry Date on App Server 1
+
+Section                     Details
+----------------------------------------------------------------------------------------
+Objective                   Create user 'kareem' on App Server 1 with an account expiry date.
+
+Pre-Requisites              SSH access to App Server 1, sudo/root privileges.
+
+Step 1                      SSH to App Server 1:
+                            ssh tony@172.16.238.10
+
+Step 2                      Switch to root user:
+                            sudo su -
+
+Step 3                      Verify current users:
+                            cat /etc/passwd
+
+Step 4                      Create the user 'kareem':
+                            useradd kareem
+
+Expected Output             User 'kareem' will be added with default home directory /home/kareem
+                            and shell /bin/bash.
+
+Step 5                      Set account expiry date (March 28, 2024):
+                            usermod -e 2024-03-28 kareem
+
+Step 6                      Verify account expiration settings:
+                            chage -l kareem
+
+Expected Output             Last password change    : <current date>
+                            Password expires        : never
+                            Account expires         : Mar 28, 2024
+                            Other fields as default.
+
+Rollback                    Delete user and home directory:
+                            userdel -r kareem
+
+End State                   User 'kareem' created successfully with account expiry set to
+                            March 28, 2024.
+----------------------------------------------------------------------------------------
