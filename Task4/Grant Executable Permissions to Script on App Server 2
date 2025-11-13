@@ -1,0 +1,114 @@
+SOP: Grant Executable Permissions to Script on App Server 2
+
+Objective:
+To grant executable permissions to the /tmp/xfusioncorp.sh script on App Server 2 so that all users can execute it.
+
+------------------------------------------------------------
+
+1. Connect to App Server 2
+Command:
+ssh steve@172.16.238.11
+
+Explanation:
+- ssh is the Secure Shell command used to connect to remote Linux servers.
+- steve is the username assigned for App Server 2.
+- 172.16.238.11 is the IP address of App Server 2.
+Once prompted, enter the password for the steve user.
+
+------------------------------------------------------------
+
+2. Switch to Root User
+Command:
+sudo su -
+
+Explanation:
+- sudo temporarily gives administrative (root) privileges.
+- su - switches to the root user’s environment.
+This allows you to make system-level changes, like modifying file permissions.
+
+------------------------------------------------------------
+
+3. Verify Current Permissions of the Script
+Command:
+ls -l /tmp/xfusioncorp.sh
+
+Output Example:
+---------- 1 root root 40 Nov 13 07:22 /tmp/xfusioncorp.sh
+
+Explanation:
+- The output shows no permissions (----------) for anyone.
+- The file belongs to root (owner) and group root.
+- This means the script cannot currently be executed, read, or modified by any user.
+
+------------------------------------------------------------
+
+4. Grant Execute Permission to All Users
+Command:
+chmod a+x /tmp/xfusioncorp.sh
+
+Explanation:
+- chmod stands for change mode — used to modify file permissions.
+- a+x means add execute permission for all users:
+  a → all (owner, group, others)
+  +x → add execute permission
+
+Verification:
+ls -l /tmp/xfusioncorp.sh
+
+Output Example:
+---x--x--x 1 root root 40 Nov 13 07:22 /tmp/xfusioncorp.sh
+
+Meaning:
+- Now everyone can execute the file, but no one (even root) can read or modify it.
+
+------------------------------------------------------------
+
+5. Set Recommended Permissions (Read + Execute for All)
+Command:
+chmod 755 /tmp/xfusioncorp.sh
+
+Explanation:
+- 7 → owner has read (r), write (w), and execute (x)
+- 5 → group has read (r) and execute (x)
+- 5 → others have read (r) and execute (x)
+
+This ensures:
+- Root can view, modify, and run the script.
+- All other users can view and execute it, but not modify.
+
+Verification:
+ls -l /tmp/xfusioncorp.sh
+
+Output Example:
+-rwxr-xr-x 1 root root 40 Nov 13 07:22 /tmp/xfusioncorp.sh
+
+Meaning:
+- Owner (root): can read, write, execute
+- Group: can read, execute
+- Others: can read, execute
+
+------------------------------------------------------------
+
+6. Validation
+To confirm the script is executable:
+/tmp/xfusioncorp.sh
+
+If it executes without a “Permission denied” error, permissions are set correctly.
+
+------------------------------------------------------------
+
+7. Summary
+
+| Step | Action | Command | Result |
+|------|---------|----------|--------|
+| 1 | SSH into App Server 2 | ssh steve@172.16.238.11 | Connected to server |
+| 2 | Switch to root user | sudo su - | Gained admin rights |
+| 3 | Check current permissions | ls -l /tmp/xfusioncorp.sh | No permissions |
+| 4 | Add execute permission | chmod a+x /tmp/xfusioncorp.sh | Everyone can execute |
+| 5 | Set standard permission | chmod 755 /tmp/xfusioncorp.sh | Owner full, others read/execute |
+| 6 | Verify | ls -l /tmp/xfusioncorp.sh | -rwxr-xr-x confirmed |
+
+------------------------------------------------------------
+
+Result:
+The script /tmp/xfusioncorp.sh is now executable by all users on App Server 2 with correct permissions.
