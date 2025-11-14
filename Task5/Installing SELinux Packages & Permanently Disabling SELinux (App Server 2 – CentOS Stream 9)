@@ -1,0 +1,56 @@
+SOP: Installing SELinux Packages & Permanently Disabling SELinux (App
+Server 2 – CentOS Stream 9)
+
+1.  Purpose This SOP describes the procedure for:
+
+-   Installing SELinux packages
+-   Permanently disabling SELinux
+-   Ensuring SELinux remains disabled after the scheduled reboot
+
+2.  Background The security team wants SELinux installed but temporarily
+    disabled for initial compatibility testing.
+
+3.  Prerequisites
+
+-   SSH access to App Server 2
+-   Root or sudo privileges
+
+4.  Procedure
+
+Step 1: SSH into the Server Command: ssh steve@172.16.238.11 Meaning:
+Connect to App Server 2.
+
+Step 2: Switch to Root User Command: sudo su - Meaning: Gain full
+administrative access.
+
+Step 3: Install SELinux Required Packages Command: yum install -y
+selinux-policy selinux-policy-targeted policycoreutils
+policycoreutils-python-utils
+
+Package Explanations: - selinux-policy: Base SELinux policy. -
+selinux-policy-targeted: Default targeted SELinux policy. -
+policycoreutils: Core SELinux management utilities. -
+policycoreutils-python-utils: Python-based SELinux tools.
+
+Step 4: Check SELinux Status Command: sestatus Meaning: Shows current
+SELinux runtime state (ignored for this task).
+
+Step 5: Permanently Disable SELinux Command: vi /etc/selinux/config Set:
+SELINUX=disabled SELINUXTYPE=targeted
+
+SELinux Mode Meanings: - enforcing: Policies applied and enforced. -
+permissive: Policies logged but not enforced. - disabled: SELinux turned
+off completely.
+
+Step 6: Do NOT Reboot the Server Meaning: Reboot is scheduled
+automatically; no manual reboot is needed.
+
+5.  Validation After Reboot Command: sestatus Expected Output: SELinux
+    status: disabled
+
+6.  Summary
+
+-   SELinux packages installed: Completed
+-   Permanent disable configuration applied: Completed
+-   Reboot unnecessary now: Completed
+-   Final state after scheduled reboot: SELinux disabled
