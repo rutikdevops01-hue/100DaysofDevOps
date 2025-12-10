@@ -1,0 +1,65 @@
+SOP: Installing Cronie & Configuring Scheduled Cron Job (All App Servers – CentOS Stream 9)
+1. Purpose
+This SOP describes the procedure for:
+- Installing the cronie package
+- Starting and enabling the crond service
+- Creating a cron job for the root user to run every 5 minutes
+2. Background
+The Nautilus system administrators want to automate daily tasks. Before deploying production scripts,
+a sample cron job is required to validate cron functionality.
+3. Prerequisites
+- SSH access to all App Servers
+- Root or sudo privileges
+4. Procedure
+Step 1: SSH into the Server
+Command:
+ssh @
+Meaning:
+Connect to the target application server.
+Step 2: Switch to Root User
+Command:
+sudo su -
+Meaning:
+Gain full administrative access to perform package installation and cron configuration.
+Step 3: Install Cronie Package
+Command:
+yum install -y cronie
+Meaning:
+Installs the cron daemon (crond) required for running scheduled tasks.
+Step 4: Start and Enable Cron Service
+Commands:
+systemctl start crond
+systemctl enable crond
+Meaning:
+- start: Launches the cron service immediately.
+- enable: Ensures cron starts automatically after reboot.
+Step 5: Verify Cron Service Status
+Command:
+systemctl status crond
+Meaning:
+Confirms the cron service is active and running.
+Step 6: Add Root Cron Job Running Every 5 Minutes
+Command:
+echo "*/5 * * * * echo hello > /tmp/cron_text" >> /var/spool/cron/root
+OR using crontab editor:
+crontab -e
+Add the line:
+*/5 * * * * echo hello > /tmp/cron_text
+Meaning:
+Creates a job that writes 'hello' to /tmp/cron_text every 5 minutes.
+Step 7: Verify Cron Entry
+Command:
+crontab -l
+Meaning:
+Displays the installed cron jobs for the root user.
+5. Validation
+After 5 minutes:
+Command:
+cat /tmp/cron_text
+Expected Output:
+hello
+6. Summary
+- Cronie package installation: Completed
+- Cron service enabled and running: Completed
+- Cron job added for root user: Completed
+- Automated output file validation: Completed
